@@ -30,6 +30,10 @@ Which customers are most likely to churn, and what specific combination of facto
 telco_churn_clean.csv - Cleaned dataset
 Telco_Churn_Dashboard.pbix - Interactive Power BI dashboard
 
+## Dashboard Preview
+![Churn by Contract](chart1_churn_by_contract.png)
+![High Risk Segment](chart4_high_risk_segment.png)
+
 ## Churn by Segment
 
 | Segment | Churn Rate |
@@ -51,13 +55,4 @@ Q: Which contract type has the highest churn rate?
 [Raw result]: Month-to-month
 [Answer]: Customers on month-to-month contracts have the highest churn rate because they lack a long-term commitment...
 
-Safety measures: keyword blocklist, restricted execution environment, automatic rate-limit retry handling — same architecture as my GA4 funnel analysis AI agent.
 
-## Data Quality Notes
-- 11 customers had blank `TotalCharges` values (brand-new signups with 0 tenure, not yet billed) — converted to 0 and excluded from tenure-based churn rate calculations, since they haven't had a chance to churn yet
-
-## Setup
-1. Download dataset: [IBM Telco Customer Churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
-2. `pip install pandas matplotlib seaborn google-genai python-dotenv`
-3. Add your Gemini API key to a `.env` file: `GEMINI_API_KEY=your_key`
-4. Run scripts in order: `01_load_data.py` → `02_clean_data.py` → `03_eda.py` → `05_load_to_sqlite.py` → `06_sql_queries.py` → `07_visualizations.py`
