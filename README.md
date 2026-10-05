@@ -1,58 +1,444 @@
-# Telco Customer Churn Analysis
+# 📊 Telco Customer Churn Analysis
 
-End-to-end churn analysis using the IBM Telco Customer Churn dataset, covering data cleaning, SQL segmentation analysis, an AI agent for natural-language querying, and an interactive Power BI dashboard.
+<p align="center">
+  <b>End-to-End Customer Churn Analytics with SQL, Python, Power BI & AI</b>
+</p>
 
-## Business Question
-Which customers are most likely to churn, and what specific combination of factors puts them at highest risk?
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SQL-SQLite-003B57?logo=sqlite&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black"/>
+  <img src="https://img.shields.io/badge/AI-Google%20Gemini-8E75B2?logo=google&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Pandas-Analysis-150458?logo=pandas&logoColor=white"/>
+</p>
 
-## Key Findings
-- **Overall churn rate: 26.54%** (1,869 of 7,043 customers)
-- **Contract type is the single biggest churn driver**: Month-to-month customers churn at 42.71% — over 15x higher than two-year contract customers (2.83%)
-- **Compound high-risk segment identified**: customers with Month-to-month contract + Electronic check payment + Fiber optic internet churn at **60.37%** — more than double the company average
-- **Electronic check payment method** shows a striking 45.29% churn rate vs. 15-19% for all other payment methods
-- **Tenure strongly predicts loyalty**: new customers (0-12 months) churn at 47.68%, vs. just 9.51% for long-tenured customers (49-72 months)
-- Churned customers pay **more per month on average** ($74.44 vs $61.27) but leave with far lower lifetime value
+---
 
-## Tech Stack
-- **Python:** pandas, matplotlib, seaborn
-- **SQL:** SQLite (CTEs, CASE WHEN, aggregation)
-- **AI:** Google Gemini API (gemini-3.6-flash) — custom agent that writes and executes its own pandas code to answer natural-language churn questions
-- **Dashboard:** Power BI (DAX measures, calculated columns)
+## 📌 Overview
 
-## Project Structure
-01_load_data.py - Loads and inspects the raw dataset
-02_clean_data.py - Fixes TotalCharges data type, handles blanks, drops customerID
-03_eda.py - Churn rate breakdown by contract, payment, tenure, internet service
-04_ai_agent.py - AI agent: answers natural-language churn questions
-05_load_to_sqlite.py - Loads cleaned data into a local SQLite database
-06_sql_queries.py - 5 SQL queries including the compound high-risk segment analysis
-07_visualizations.py - Generates all 4 charts
-telco_churn_clean.csv - Cleaned dataset
-Telco_Churn_Dashboard.pbix - Interactive Power BI dashboard
+An end-to-end **customer churn analytics project** built using the IBM Telco Customer Churn dataset.
 
-## Dashboard Preview
-![Churn by Contract](chart1_churn_by_contract.png)
-![High Risk Segment](chart4_high_risk_segment.png)
+The project combines:
 
-## Churn by Segment
+* 🐍 **Python** for data cleaning, EDA and visualization
+* 🗄️ **SQL** for segmentation and KPI analysis
+* 🤖 **Google Gemini** for an AI-powered natural-language Data Analyst Agent
+* 📊 **Power BI** for interactive business intelligence and dashboarding
 
-| Segment | Churn Rate |
-|---|---|
-| Month-to-month contract | 42.71% |
-| One year contract | 11.27% |
-| Two year contract | 2.83% |
-| Fiber optic internet | 41.89% |
-| DSL internet | 18.96% |
-| Electronic check payment | 45.29% |
-| **High-risk compound segment** | **60.37%** |
+The objective is to identify **which customers are most likely to churn, why they churn, and which customer segments represent the greatest retention and revenue risk.**
 
-## Revenue Impact
-Month-to-month churned customers alone account for **$120,847 in monthly recurring revenue at risk** and **$1.93M in lost total customer value** — far exceeding one-year ($674,991) and two-year ($260,753) contract losses combined.
+---
 
-## AI Agent Example
-Q: Which contract type has the highest churn rate?
-[Generated code]: result = (df['Churn'] == 'Yes').groupby(df['Contract']).mean().idxmax()
-[Raw result]: Month-to-month
-[Answer]: Customers on month-to-month contracts have the highest churn rate because they lack a long-term commitment...
+## 🎯 Business Question
 
+> **Which customers are most likely to churn, and what combination of factors puts them at the highest risk?**
 
+The analysis focuses on:
+
+* Contract type
+* Payment method
+* Internet service
+* Customer tenure
+* Monthly charges
+* Customer lifetime value
+* Compound customer segments
+
+---
+
+## 📈 Key Results
+
+| KPI                       |     Result |
+| ------------------------- | ---------: |
+| 👥 Total Customers        |  **7,043** |
+| 🔴 Overall Churn Rate     | **26.54%** |
+| 🚪 Churned Customers      |  **1,869** |
+| 📄 Month-to-Month Churn   | **42.71%** |
+| 💳 Electronic Check Churn | **45.29%** |
+| ⏳ New Customer Churn      | **47.68%** |
+| 🏆 Highest-Risk Segment   | **60.37%** |
+
+---
+
+## 🔥 Key Insights
+
+### 1. Contract Type Is the Strongest Churn Indicator
+
+| Contract       | Churn Rate |
+| -------------- | ---------: |
+| Month-to-month | **42.71%** |
+| One year       | **11.27%** |
+| Two year       |  **2.83%** |
+
+Customers without a long-term commitment show dramatically higher churn.
+
+---
+
+### 2. High-Risk Customer Segment
+
+The analysis identified a particularly vulnerable customer segment:
+
+> **Month-to-month + Electronic Check + Fiber Optic**
+
+**Churn Rate: 60.37%**
+
+This is more than **2× the overall churn rate**, making this segment a strong candidate for targeted retention campaigns.
+
+---
+
+### 3. Payment Method Matters
+
+Customers using **Electronic Check** show a churn rate of:
+
+> **45.29%**
+
+Compared with approximately **15–19%** for other payment methods.
+
+This makes payment method an important dimension for further customer segmentation and investigation.
+
+---
+
+### 4. Tenure Strongly Correlates With Retention
+
+| Customer Tenure | Churn Rate |
+| --------------- | ---------: |
+| 0–12 months     | **47.68%** |
+| 49–72 months    |  **9.51%** |
+
+New customers are significantly more likely to churn than long-tenured customers.
+
+---
+
+## 💰 Revenue Impact
+
+Month-to-month churned customers represent approximately:
+
+**$120,847**
+
+in monthly recurring revenue at risk.
+
+Estimated lost customer value:
+
+**$1.93M**
+
+This demonstrates that churn is not only a customer-retention problem — it is a measurable **revenue-risk problem**.
+
+---
+
+# 🤖 AI Data Analyst Agent
+
+The project includes an **AI-powered Data Analyst Agent** that allows users to query the churn dataset using natural language.
+
+### Example
+
+**Question**
+
+```text
+Which contract type has the highest churn rate?
+```
+
+### Agent Workflow
+
+```text
+Natural Language Question
+          ↓
+     Google Gemini
+          ↓
+   Generate Pandas Code
+          ↓
+ Execute Against Dataset
+          ↓
+      Raw Result
+          ↓
+ Natural Language Answer
+```
+
+### Example Generated Analysis
+
+```python
+result = (
+    (df['Churn'] == 'Yes')
+    .groupby(df['Contract'])
+    .mean()
+    .idxmax()
+)
+```
+
+### Result
+
+```text
+Month-to-month
+```
+
+The agent therefore acts as a **natural-language Data Analyst**, allowing business questions to be answered without manually writing the underlying analysis code.
+
+---
+
+# 🔄 Project Workflow
+
+```text
+              IBM Telco Dataset
+                      │
+                      ▼
+               Data Cleaning
+                      │
+                      ▼
+             Exploratory Analysis
+                      │
+          ┌───────────┴───────────┐
+          ▼                       ▼
+       Python                    SQL
+          │                       │
+          │              Customer Segmentation
+          │                       │
+          └───────────┬───────────┘
+                      ▼
+                Key Findings
+                      │
+             ┌────────┴────────┐
+             ▼                 ▼
+        AI Data Agent       Power BI
+             │              Dashboard
+             └────────┬────────┘
+                      ▼
+             Business Insights
+                      │
+                      ▼
+             Retention Strategy
+```
+
+---
+
+# 🛠️ Tech Stack
+
+### Data Analysis
+
+* Python
+* Pandas
+* Matplotlib
+* Seaborn
+
+### Database & SQL
+
+* SQLite
+* CTEs
+* `CASE WHEN`
+* Aggregations
+* Segmentation queries
+
+### Generative AI
+
+* Google Gemini API
+* Natural-language querying
+* Code generation
+* AI-assisted data analysis
+
+### Business Intelligence
+
+* Microsoft Power BI
+* DAX
+* Calculated columns
+* Interactive dashboards
+
+---
+
+# 📁 Project Structure
+
+```text
+telco-customer-churn-analysis/
+│
+├── 01_load_data.py
+├── 02_clean_data.py
+├── 03_eda.py
+├── 04_ai_agent.py
+├── 05_load_to_sqlite.py
+├── 06_sql_queries.py
+├── 07_visualizations.py
+│
+├── telco_churn_clean.csv
+├── Telco_Churn_Dashboard.pbix
+│
+├── chart1_churn_by_contract.png
+├── chart4_high_risk_segment.png
+│
+└── README.md
+```
+
+---
+
+# 🗄️ SQL Analysis
+
+SQL was used to perform reproducible customer segmentation and KPI calculations.
+
+Example:
+
+```sql
+SELECT
+    Contract,
+    AVG(
+        CASE
+            WHEN Churn = 'Yes' THEN 1.0
+            ELSE 0.0
+        END
+    ) AS churn_rate
+FROM customers
+GROUP BY Contract
+ORDER BY churn_rate DESC;
+```
+
+The SQL analysis was also used to identify compound high-risk customer segments.
+
+---
+
+# 📊 Power BI Dashboard
+
+The Power BI dashboard provides an interactive view of churn across major customer segments.
+
+### Dashboard includes
+
+* Churn KPIs
+* Churn by contract
+* Churn by payment method
+* Churn by internet service
+* Tenure-based analysis
+* High-risk segment analysis
+* Customer and revenue insights
+
+### Dashboard Preview
+
+<p align="center">
+  <img src="chart1_churn_by_contract.png" width="80%"/>
+</p>
+
+<p align="center">
+  <img src="chart4_high_risk_segment.png" width="80%"/>
+</p>
+
+---
+
+# 💡 Business Recommendations
+
+### 🎯 1. Target Month-to-Month Customers
+
+Offer incentives for high-risk customers to transition toward longer-term contracts.
+
+### 🚀 2. Focus on Early-Tenure Customers
+
+Strengthen onboarding and engagement programs during the first 12 months.
+
+### 🔥 3. Prioritize High-Risk Segments
+
+Use the identified compound segment for targeted retention campaigns.
+
+### 💳 4. Investigate Electronic Check Customers
+
+Analyze whether payment experience or billing friction contributes to the unusually high churn rate.
+
+### 💰 5. Combine Churn Risk With Customer Value
+
+Prioritize retention efforts toward customers with both:
+
+```text
+High Churn Risk
+        +
+High Customer Value
+```
+
+---
+
+# 📚 What This Project Demonstrates
+
+This project demonstrates an end-to-end analytics workflow:
+
+```text
+Raw Data
+   ↓
+Data Cleaning
+   ↓
+EDA
+   ↓
+SQL Analysis
+   ↓
+Customer Segmentation
+   ↓
+AI-Assisted Analysis
+   ↓
+Power BI Dashboard
+   ↓
+Business Recommendations
+```
+
+### Core Skills
+
+**Data Analytics**
+
+* Data cleaning
+* Exploratory analysis
+* Customer segmentation
+* KPI analysis
+* Business insights
+
+**SQL**
+
+* Aggregations
+* CTEs
+* Conditional logic
+* Segmentation
+* Churn analysis
+
+**Python**
+
+* Pandas
+* Data transformation
+* Visualization
+* Exploratory analysis
+
+**Power BI**
+
+* DAX
+* Calculated columns
+* Dashboard design
+* Interactive visualization
+
+**Generative AI**
+
+* Natural-language data querying
+* LLM-powered code generation
+* AI-assisted analytical workflows
+
+---
+
+## 📌 Dataset
+
+This project uses the **IBM Telco Customer Churn dataset**.
+
+The dataset contains customer-level information including:
+
+* Demographics
+* Services
+* Contract information
+* Payment methods
+* Tenure
+* Monthly charges
+* Total charges
+* Churn status
+
+---
+
+## 🚀 Future Improvements
+
+* Churn prediction using machine learning
+* Customer Lifetime Value modeling
+* Automated retention recommendations
+* Real-time churn monitoring
+* Automated dashboard refresh
+* Additional behavioral/customer data
+
+---
+
+## 👤 Author
+
+**Siddharth Solanki**
+
+`Data Analytics` • `SQL` • `Python` • `Power BI` • `Generative AI`
+
+---
